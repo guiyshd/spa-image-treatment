@@ -1,9 +1,10 @@
-from flask import render_template
-from api.images import bp
+from flask import Blueprint
 
 
-@api.route('/resize', methods=['GET', 'POST'])
-def resize():
+bp = Blueprint('image', __name__)
+
+@bp.route('/')
+def index():
     # response_object = {'status': 'success'}
     # if request.method == 'POST':
     #     post_data = request.get_json()
@@ -11,4 +12,4 @@ def resize():
     #     response_object['message'] = 'Book added!'
     # else:
     #     response_object['books'] = BOOKS
-    return jsonify(response_object)
+    return "Test"

@@ -10,7 +10,7 @@ def create_api(extra_config_settings={}):
 
     CORS(api)
 
-    from api.images import bp
-    api.register_blueprint(api)
+    from .images import blueprints
+    blueprints(api)
 
     return api

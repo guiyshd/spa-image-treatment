@@ -1,4 +1,5 @@
-from flask import Blueprint
+from .views import bp
 
 
-bp = Blueprint('images', __name__, url_prefix='/images')
+def blueprints(api):
+    api.register_blueprint(bp)
