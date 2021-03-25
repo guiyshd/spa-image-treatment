@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask import jsonify
 
 
-def create_api(extra_config_settings={}):    
+def create_api():    
     api = Flask(__name__)
 
     api.config.from_object('api.settings')
