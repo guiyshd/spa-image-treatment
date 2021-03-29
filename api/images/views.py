@@ -1,8 +1,11 @@
-from flask import Blueprint, send_file, request
+from flask import Blueprint, send_file, request, make_response, jsonify
 from . import script
+from pathlib import Path
+from werkzeug.utils import secure_filename
 
-import os
-
+from io import BufferedReader
+import base64
+from PIL import Image
 
 bp = Blueprint('image', __name__)
 
@@ -10,12 +13,10 @@ bp = Blueprint('image', __name__)
 def resize():
     response_object = {'status': 'success'}
     if request.method == 'POST':
-        storage = request.files.getlist('uploads')
-        print(storage[0])
-        # storage[0].save(os.path.join('./uploads/' + filename))
-        # return sucessful response
-        filename = storage
-    else:
-        # return processed images
-        filename = storage2
-    return send_file(filename, mimetype='image')
+        files = request.files.getlist("uploads")
+        for file in files:
+            file.save('./api/images/uploads/' + secure_filename(file.filename))
+        return 'file uploaded successfully'
+    # else:
+    #     return make_response(jsonify({'response': 'ok'}))
+    #     # return send_file(rgb_im, mimetype='image')

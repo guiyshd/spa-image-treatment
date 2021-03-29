@@ -80,22 +80,22 @@ export default {
       for (let i = 0; i < this.selectedFiles.length; i++) {
         this.progressInfos[i] = { percentage: 0, fileName: this.selectedFiles[i].name };
         formData.append('uploads', this.selectedFiles[i])
-        axios.post(path, formData)
-          .then((response) => {
-            this.progressInfos[i].percentage = Math.round(100)
-            let prevMessage = this.message ? this.message + "\n" : "";
-            this.message = prevMessage + response.data.message;
-
-            return axios.get(path)
-          })
-          .then((files) => {
-            this.fileInfos = files.data;
-          })
-          .catch(() => {
-            this.progressInfos[i].percentage = 0;
-            this.message = "Could not upload the file:" + this.selectedFiles[i].name;
-          });
+        this.progressInfos[i].percentage = Math.round(100)
       }
+      axios.post(path, formData)
+        .then((response) => {
+          console.log(formData.values())
+          let prevMessage = this.message ? this.message + "\n" : "";
+          this.message = prevMessage + response.data.message;
+
+          return axios.get(path)
+        })
+        .then((files) => {
+          this.fileInfos = files.data;
+        })
+        .catch((error) => {
+          console.log(error)
+        });
     },
     mounted() {
         axios.get(path)
