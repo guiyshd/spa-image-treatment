@@ -26,7 +26,7 @@
 
     <button class="btn btn-success"
       :disabled="!selectedFiles"
-      @click="uploadFiles"
+      @click="addImage"
     >
       Upload
     </button>
@@ -72,37 +72,30 @@ export default {
   },
   methods: {
     selectFile() {
-      this.progressInfos = [];
-      this.selectedFiles = event.target.files;
+      this.progressInfos = []
+      this.selectedFiles = event.target.files
     },
-    uploadFiles() {
-      this.message = "";
-
-      for (let i = 0; i < this.selectedFiles.length; i++) {
-        this.upload(i, this.selectedFiles[i]);
-      }
-    },
-    upload(idx, file) {
-      this.progressInfos[idx] = { percentage: 0, fileName: file.name };
-
+    addImage(){
       var formData = new FormData()
-      formData.append('file', this.selectedFiles)
-      axios.post(path, formData)
-        .then((response) => {
-          let prevMessage = this.message ? this.message + "\n" : "";
-          this.message = prevMessage + response.data.message;
+      for (let i = 0; i < this.selectedFiles.length; i++) {
+        this.progressInfos[i] = { percentage: 0, fileName: this.selectedFiles[i].name };
+        formData.append('uploads', this.selectedFiles[i])
+        axios.post(path, formData)
+          .then((response) => {
+            this.progressInfos[i].percentage = Math.round(100)
+            let prevMessage = this.message ? this.message + "\n" : "";
+            this.message = prevMessage + response.data.message;
 
-          return axios.get(path)
-        })
-        .then((files) => {
-          this.fileInfos = files.data;
-        })
-        .catch(() => {
-          this.progressInfos[idx].percentage = 0;
-          this.message = "Could not upload the file:" + file.name;
-        });
-        
-      this.progressInfos[idx].percentage = Math.round(100)
+            return axios.get(path)
+          })
+          .then((files) => {
+            this.fileInfos = files.data;
+          })
+          .catch(() => {
+            this.progressInfos[i].percentage = 0;
+            this.message = "Could not upload the file:" + this.selectedFiles[i].name;
+          });
+      }
     },
     mounted() {
         axios.get(path)
