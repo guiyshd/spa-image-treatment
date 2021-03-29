@@ -1,36 +1,22 @@
 <template>
   <div id="app">
-    <h1>{{ title }}</h1>
-    <Modal/>
+    <div class="container" style="width:600px">
+      <div style="margin: 20px">
+        <h4>Resize Images</h4>
+      </div>
+
+      <upload-images></upload-images>
+    </div>
   </div>
 </template>
 
 <script>
-import Modal from './components/Modal.vue'
+import UploadImages from "./components/Resize";
 
 export default {
-  name: 'App',
-  components: { Modal },
-  data() {
-    return {
-      title: 'My First Vue App'
-    }
+  name: "App",
+  components: {
+    UploadImages
   }
-}
+};
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-h1 {
-  border-bottom: 1px solid #ddd;
-  display: inline-block;
-  padding-bottom: 10px;
-}
-</style>
