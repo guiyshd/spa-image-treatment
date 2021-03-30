@@ -2,7 +2,7 @@
   <div id="app">
     <div class="container" style="width:600px">
       <div style="margin: 20px">
-        <h4>Resize Images</h4>
+        <h4>Redimensionamento de Imagens</h4>
         <upload-images></upload-images>
       </div>
     </div>

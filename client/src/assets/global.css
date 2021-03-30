@@ -4,3 +4,6 @@ body {
 p {
     font-style: italic;
 }
+.card {
+    text-align: center;
+}

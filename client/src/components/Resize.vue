@@ -40,14 +40,14 @@
     </div>
 
     <div class="card">
-      <div class="card-header">List of Files</div>
+      <div class="card-header">Imagens</div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item"
-          v-for="(file, index) in fileInfos"
-          :key="index"
-        >
-          <p><a :href="file.url">{{ file.name }}</a></p>
-          <img :src="file.url" :alt="file.name" height="80px">
+            v-for="(file, index) in fileInfos"
+            :key="index"
+          >
+          <p><a :href="file.url">{{ index }}</a></p>
+          <img :src="'data:image/jpeg;base64,'+file" :alt="file" height="200px">
         </li>
       </ul>
     </div>
@@ -84,14 +84,14 @@ export default {
       }
       axios.post(path, formData)
         .then((response) => {
-          console.log(formData.values())
           let prevMessage = this.message ? this.message + "\n" : "";
           this.message = prevMessage + response.data.message;
 
           return axios.get(path)
         })
         .then((files) => {
-          this.fileInfos = files.data;
+          this.fileInfos = files.data
+          console.log(this.fileInfos)
         })
         .catch((error) => {
           console.log(error)
@@ -100,7 +100,7 @@ export default {
     mounted() {
         axios.get(path)
           .then((response) => {
-            this.fileInfos = response.data;
+            this.fileInfos = response.data
         });
     }
   }
