@@ -2,33 +2,40 @@ import os, glob
 from PIL import Image
 
 
-THUMBNAIL_DIRECTORY = r'./uploads/thumbnails'
 UPLOAD_DIRECTORY = r'./uploads/'
+THUMBNAIL_DIRECTORY = r'./uploads/thumbnails'
+PHOTO_DIRECTORY = r'./uploads/photos'
 
-if not os.path.exists(THUMBNAIL_DIRECTORY):
-    os.makedirs(THUMBNAIL_DIRECTORY)
+
+def thumbnail(img):
+    wpercent = (300/float(img.size[0]))
+    hsize = int((float(img.size[1])*float(wpercent)))
+    img = img.resize((300, hsize), Image.ANTIALIAS)
+    return img
 
 
-def square(im, min_size=300, fill_color=(0, 0, 0, 0)):
+def photo(img):
+    wpercent = (500/float(img.size[0]))
+    hsize = int((float(img.size[1])*float(wpercent)))
+    img = img.resize((500, hsize), Image.ANTIALIAS)
+    return img
+
+def square(im, fill_color=(255, 255, 255, 0)):
     x, y = im.size
-    size = max(min_size, x, y)
+    size = max(x, x, y)
     new_im = Image.new('RGBA', (size, size), fill_color)
     new_im.paste(im, (int((size - x) / 2), int((size - y) / 2)))
     return new_im
 
 
-def thumbnail():
-    basewidth = 300
-    for filename in os.listdir(UPLOAD_DIRECTORY):
-        path = os.path.join(UPLOAD_DIRECTORY, filename)
-        if os.path.isfile(path):
-            img = Image.open(path)
-            new_image = square(img)
-            rgb_im = new_image.convert('RGB')
-            # wpercent = (basewidth/float(img.size[0]))
-            # hsize = int((float(img.size[1])*float(wpercent)))
-            # img = img.resize((basewidth,hsize), Image.ANTIALIAS)
-            rgb_im.save(os.path.join(THUMBNAIL_DIRECTORY, filename) + '.jpg', "JPEG")
+for filename in os.listdir(UPLOAD_DIRECTORY):
+    path = os.path.join(UPLOAD_DIRECTORY, filename)
+    if os.path.isfile(path):
+        img = Image.open(path)
 
+        thumb = thumbnail(img)
+        thumb = square(thumb)
+        thumb.save(os.path.join(THUMBNAIL_DIRECTORY, filename) + '.png', "PNG")
 
-thumbnail()
+        ph = photo(thumb)
+        ph.save(os.path.join(PHOTO_DIRECTORY, filename) + '.png', "PNG")
