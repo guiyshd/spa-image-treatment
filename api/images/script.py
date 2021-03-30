@@ -20,6 +20,7 @@ def photo(img):
     img = img.resize((500, hsize), Image.ANTIALIAS)
     return img
 
+
 def square(im, fill_color=(255, 255, 255, 0)):
     x, y = im.size
     size = max(x, x, y)
