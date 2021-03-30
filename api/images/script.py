@@ -1,4 +1,4 @@
-import os, glob
+import os
 from PIL import Image
 
 
