@@ -2,9 +2,9 @@ import os
 from PIL import Image
 
 
-UPLOAD_DIRECTORY = r'./uploads/'
-THUMBNAIL_DIRECTORY = r'./uploads/thumbnails'
-PHOTO_DIRECTORY = r'./uploads/photos'
+UPLOAD_DIRECTORY = r'./api/images/files/uploads/'
+THUMBNAIL_DIRECTORY = r'./api/images/files/thumbnails/'
+PHOTO_DIRECTORY = r'./api/images/files/photos/'
 
 
 def thumbnail(img):
@@ -29,14 +29,15 @@ def square(im, fill_color=(255, 255, 255, 0)):
     return new_im
 
 
-for filename in os.listdir(UPLOAD_DIRECTORY):
-    path = os.path.join(UPLOAD_DIRECTORY, filename)
-    if os.path.isfile(path):
-        img = Image.open(path)
+def create():
+    for filename in os.listdir(UPLOAD_DIRECTORY):
+        path = os.path.join(UPLOAD_DIRECTORY, filename)
+        if os.path.isfile(path):
+            img = Image.open(path)
 
-        thumb = thumbnail(img)
-        thumb = square(thumb)
-        thumb.save(os.path.join(THUMBNAIL_DIRECTORY, filename) + '.png', "PNG")
+            thumb = thumbnail(img)
+            thumb = square(thumb)
+            thumb.save(os.path.join(THUMBNAIL_DIRECTORY, filename.split('.')[0]) + '.png', "PNG")
 
-        ph = photo(thumb)
-        ph.save(os.path.join(PHOTO_DIRECTORY, filename) + '.png', "PNG")
+            ph = photo(thumb)
+            ph.save(os.path.join(PHOTO_DIRECTORY, filename.split('.')[0]) + '.png', "PNG")
