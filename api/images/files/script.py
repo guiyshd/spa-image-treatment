@@ -8,9 +8,9 @@ PHOTO_DIRECTORY = r'./api/images/files/photos/'
 
 
 def thumbnail(img):
-    wpercent = (300/float(img.size[0]))
+    wpercent = (350/float(img.size[0]))
     hsize = int((float(img.size[1])*float(wpercent)))
-    img = img.resize((300, hsize), Image.ANTIALIAS)
+    img = img.resize((350, hsize), Image.ANTIALIAS)
     return img
 
 
