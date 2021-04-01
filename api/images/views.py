@@ -1,4 +1,6 @@
-from flask import Blueprint, request
+from flask import Blueprint, render_template, abort, request, jsonify
+from jinja2 import TemplateNotFound
+
 from werkzeug.utils import secure_filename
 
 from .files import script
@@ -16,7 +18,17 @@ if not os.path.exists(UPLOAD_DIRECTORY):
     os.makedirs(PHOTO_DIRECTORY)
 
 
-bp = Blueprint('image', __name__)
+bp = Blueprint('image', __name__, template_folder='templates')
+
+@bp.route('/')
+def index():
+    return render_template('index.html')
+
+
+@bp.route('/ping', methods=['GET'])
+def ping_pong():
+    return jsonify('pong!')
+
 
 @bp.route('/files', methods=['POST', 'GET'])
 def resize():
@@ -25,7 +37,7 @@ def resize():
         files = request.files.getlist("uploads")
         for file in files:
             file.save(UPLOAD_DIRECTORY + secure_filename(file.filename))
-        response_object['message'] = 'Success!'
+        response_object['message'] = 'Files Uploaded Successfully!'
     else:
         script.create()
         for filename in os.listdir(THUMBNAIL_DIRECTORY):
