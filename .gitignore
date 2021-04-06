@@ -124,6 +124,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-api/images/files/photos
-api/images/files/thumbnails
-api/images/files/uploads
+app/keywords/files/
