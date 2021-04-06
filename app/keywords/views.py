@@ -3,7 +3,7 @@ from jinja2 import TemplateNotFound
 
 from werkzeug.utils import secure_filename
 
-from .keywords import script
+from . import script
 
 import os
 import base64
