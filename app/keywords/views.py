@@ -3,19 +3,10 @@ from jinja2 import TemplateNotFound
 
 from werkzeug.utils import secure_filename
 
-from . import script
+from . import scripts
 
 import os
 import base64
-
-
-UPLOAD_DIRECTORY = r'./api/images/files/uploads/'
-THUMBNAIL_DIRECTORY = r'./api/images/files/thumbnails'
-PHOTO_DIRECTORY = r'./api/images/files/photos'
-
-if not os.path.exists(UPLOAD_DIRECTORY):
-    os.makedirs(THUMBNAIL_DIRECTORY)
-    os.makedirs(PHOTO_DIRECTORY)
 
 
 bp = Blueprint('keywords', __name__, template_folder='templates')
