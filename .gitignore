@@ -124,4 +124,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-app/keywords/files/
+app/keys/
