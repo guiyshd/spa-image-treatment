@@ -10,7 +10,7 @@ def create_app():
 
     CORS(app)
 
-    from .keywords import blueprints
+    from .keys import blueprints
     blueprints(app)
 
     return app
