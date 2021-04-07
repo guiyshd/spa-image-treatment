@@ -23,18 +23,18 @@ def create_photo(img):
     return img
 
 
-def create_square(im, fill_color=(255, 255, 255, 0)):
-    x, y = im.size
+def create_square(img, fill_color=(255, 255, 255, 0)):
+    x, y = img.size
     size = max(x, x, y)
     new_im = Image.new('RGBA', (size, size), fill_color)
-    new_im.paste(im, (int((size - x) / 2), int((size - y) / 2)))
+    new_im.paste(img, (int((size - x) / 2), int((size - y) / 2)))
     return new_im
 
 
 def create():
     for files in os.listdir(ARCHIVES_DIRECTORY):
-        THUMBNAIL_DIRECTORY = 'files/' + files + '/thumbs'
-        if not os.path.exists(THUMBNAIL_DIRECTORY):
+        thumbnail_path = 'files/' + files + '/thumbs'
+        if not os.path.exists(thumbnail_path):
             os.mkdir('files/' + files + '/thumbs')
         for keyword in os.listdir(os.path.join(ARCHIVES_DIRECTORY, files)):
             keyword_path = os.path.join(ARCHIVES_DIRECTORY, files, keyword)
@@ -49,12 +49,11 @@ def create():
                             image_path = os.path.join(keyword_path, image)
                             if os.path.isfile(image_path):
                                 img = Image.open(image_path)
-
                                 photo = create_photo(img)
                                 photo.save(os.path.join(keyword_path, keyword) + '.png', "PNG")
-                                
                                 thumb = create_thumb(photo)
                                 thumb.save(os.path.join(keyword_path, keyword) + '-thumb.png', "PNG")
-                                thumb.save(os.path.join(THUMBNAIL_DIRECTORY, keyword) + '.png', "PNG")
+                                thumb.save(os.path.join(thumbnail_path, keyword) + '.png', "PNG")
+    return
 
 create()
