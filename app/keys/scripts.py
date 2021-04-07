@@ -1,27 +1,29 @@
 import os
 from PIL import Image
 
-
-UPLOAD_DIRECTORY = r'./api/images/files/uploads/'
-THUMBNAIL_DIRECTORY = r'./api/images/files/thumbnails/'
-PHOTO_DIRECTORY = r'./api/images/files/photos/'
+import imghdr
 
 
-def thumbnail(img):
+ARCHIVES_DIRECTORY = r'./files/'
+
+
+def create_thumb(img):
     wpercent = (350/float(img.size[0]))
     hsize = int((float(img.size[1])*float(wpercent)))
     img = img.resize((350, hsize), Image.ANTIALIAS)
+    img = create_square(img)
     return img
 
 
-def photo(img):
+def create_photo(img):
     wpercent = (500/float(img.size[0]))
     hsize = int((float(img.size[1])*float(wpercent)))
     img = img.resize((500, hsize), Image.ANTIALIAS)
+    img = create_square(img)
     return img
 
 
-def square(im, fill_color=(255, 255, 255, 0)):
+def create_square(im, fill_color=(255, 255, 255, 0)):
     x, y = im.size
     size = max(x, x, y)
     new_im = Image.new('RGBA', (size, size), fill_color)
@@ -30,14 +32,29 @@ def square(im, fill_color=(255, 255, 255, 0)):
 
 
 def create():
-    for filename in os.listdir(UPLOAD_DIRECTORY):
-        path = os.path.join(UPLOAD_DIRECTORY, filename)
-        if os.path.isfile(path):
-            img = Image.open(path)
+    for files in os.listdir(ARCHIVES_DIRECTORY):
+        THUMBNAIL_DIRECTORY = 'files/' + files + '/thumbs'
+        if not os.path.exists(THUMBNAIL_DIRECTORY):
+            os.mkdir('files/' + files + '/thumbs')
+        for keyword in os.listdir(os.path.join(ARCHIVES_DIRECTORY, files)):
+            keyword_path = os.path.join(ARCHIVES_DIRECTORY, files, keyword)
+            folder = os.listdir(keyword_path)
+            print(keyword)
+            for image in folder:
+                folder = os.listdir(keyword_path)
+                if keyword != "thumbs":
+                    image_path = os.path.join(keyword_path, image)
+                    if not (any((keyword + ".png") in s for s in folder)):
+                        if image[-4:] == '.jpg' or image[-4:] == '.png':
+                            image_path = os.path.join(keyword_path, image)
+                            if os.path.isfile(image_path):
+                                img = Image.open(image_path)
 
-            thumb = thumbnail(img)
-            thumb = square(thumb)
-            thumb.save(os.path.join(THUMBNAIL_DIRECTORY, filename.split('.')[0]) + '.png', "PNG")
+                                photo = create_photo(img)
+                                photo.save(os.path.join(keyword_path, keyword) + '.png', "PNG")
+                                
+                                thumb = create_thumb(photo)
+                                thumb.save(os.path.join(keyword_path, keyword) + '-thumb.png', "PNG")
+                                thumb.save(os.path.join(THUMBNAIL_DIRECTORY, keyword) + '.png', "PNG")
 
-            ph = photo(thumb)
-            ph.save(os.path.join(PHOTO_DIRECTORY, filename.split('.')[0]) + '.png', "PNG")
+create()
