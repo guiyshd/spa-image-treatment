@@ -4,7 +4,7 @@ from PIL import Image
 import imghdr
 
 
-ARCHIVES_DIRECTORY = r'.app/keys/files/'
+ARCHIVES_DIRECTORY = r'.app/keys/archives/'
 
 
 def create_thumb(img):
