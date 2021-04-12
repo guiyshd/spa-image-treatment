@@ -2,12 +2,13 @@ from flask import Blueprint, render_template, abort, request, jsonify
 from jinja2 import TemplateNotFound
 
 from werkzeug.utils import secure_filename
+from io import BytesIO
 
 from . import scripts
 
 import os
 import base64
-
+import zipfile
 
 bp = Blueprint('keywords', __name__, template_folder='templates')
 
@@ -21,26 +22,39 @@ def ping_pong():
     return jsonify('pong!')
 
 
-@bp.route('/files', methods=['POST', 'GET'])
-def resize():
-    response_object = {'Created By': 'Raul 👺'}
-    if request.method == 'POST':
-        memory_file = BytesIO()
-        with zipfile.ZipFile(memory_file, 'w') as zf:
-            files = result['files']
-            for individualFile in files:
-                data = zipfile.ZipInfo(individualFile['fileName'])
-                data.date_time = time.localtime(time.time())[:6]
-                data.compress_type = zipfile.ZIP_DEFLATED
-                zf.writestr(data, individualFile['fileData'])
-        memory_file.seek(0)
-        return send_file(memory_file, attachment_filename='capsule.zip', as_attachment=True)
+def unzip_file(zip_src, dst_dir):
+    """
+    Unzip the zip file
+         :param zip_src: full path of zip file
+         :param dst_dir: the destination folder to extract to
+    :return:
+    """
+    r = zipfile.is_zipfile(zip_src)
+    if r:
+        fz = zipfile.ZipFile(zip_src, "r")
+        for file in fz.namelist():
+            fz.extract(file, dst_dir)
     else:
-        script.create()
-        for filename in os.listdir(THUMBNAIL_DIRECTORY):
-            path = os.path.join(THUMBNAIL_DIRECTORY, filename)
-            if os.path.isfile(path):
-                with open(path, "rb") as image:
-                    b64 = base64.b64encode(image.read()).decode('utf-8')
-                response_object[filename] = b64
-    return response_object
+                 return "Please upload zip file"
+
+
+@bp.route('/files', methods=['POST'])
+def resize():
+    obj = request.files.get("file")
+    print(obj)
+    print(obj.filename)
+    print(obj.stream)
+
+    ret_list = obj.filename.rsplit(".", maxsplit=1)
+    if len(ret_list) != 2:
+        return "Please upload rar file"
+    if ret_list[1] != "rar":
+        return "Please upload rar file"
+    
+    file_path = os.path.join(BASE_DIR, "files", obj.filename)
+    obj.save(file_path)
+    target_path = os.path.join(BASE_DIR, "files", str(uuid.uuid4()))
+    ret = unzip_file(file_path, target_path)
+    os.remove(file_path)
+    
+    return send_file(memory_file, attachment_filename='capsule.zip', as_attachment=True)
