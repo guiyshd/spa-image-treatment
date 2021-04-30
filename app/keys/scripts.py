@@ -28,6 +28,7 @@ def create_square(img, fill_color=(255, 255, 255, 0)):
     size = max(x, x, y)
     new_im = Image.new('RGBA', (size, size), fill_color)
     new_im.paste(img, (int((size - x) / 2), int((size - y) / 2)))
+    new_im = new_im.convert("RGB")
     return new_im
 
 
@@ -39,21 +40,22 @@ def create():
         for keyword in os.listdir(os.path.join(ARCHIVES_DIRECTORY, files)):
             keyword_path = os.path.join(ARCHIVES_DIRECTORY, files, keyword)
             folder = os.listdir(keyword_path)
-            print(keyword)
+            # print(keyword)
             for image in folder:
                 folder = os.listdir(keyword_path)
                 if keyword != "thumbs":
                     image_path = os.path.join(keyword_path, image)
-                    if not (any((keyword + ".png") in s for s in folder)):
+                    if not (any((keyword + ".jpg") in s for s in folder)):
                         if image[-4:] == '.jpg' or image[-4:] == '.png' or image[-5:] == '.jpeg':
                             image_path = os.path.join(keyword_path, image)
                             if os.path.isfile(image_path):
+                                print(keyword_path)
                                 img = Image.open(image_path)
                                 photo = create_photo(img)
-                                photo.save(os.path.join(keyword_path, keyword) + '.png', "PNG")
+                                photo.save(os.path.join(keyword_path, keyword) + '.jpg', "JPEG")
                                 thumb = create_thumb(photo)
-                                thumb.save(os.path.join(keyword_path, keyword) + '-thumb.png', "PNG")
-                                thumb.save(os.path.join(thumbnail_path, keyword) + '.png', "PNG")
+                                thumb.save(os.path.join(keyword_path, keyword) + '-thumb.jpg', "JPEG")
+                                thumb.save(os.path.join(thumbnail_path, keyword) + '.jpg', "JPEG")
     return
 
 create()
