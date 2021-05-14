@@ -32,7 +32,7 @@ def create_square(img, fill_color=(255, 255, 255, 0)):
     return new_im
 
 
-def create():
+def national():
     for files in os.listdir(ARCHIVES_DIRECTORY):
         thumbnail_path = 'archives/' + files + '/thumbs'
         if not os.path.exists(thumbnail_path):
@@ -58,4 +58,17 @@ def create():
                                 thumb.save(os.path.join(thumbnail_path, keyword) + '.jpg', "JPEG")
     return
 
-create()
+
+def logo():
+    logo_path = r'./archives/favicon.png'
+    for files in os.listdir(ARCHIVES_DIRECTORY):
+        thumbnail_path = 'archives/thumbs'
+        if not os.path.exists(thumbnail_path):
+            os.mkdir(thumbnail_path)
+        for keyword in os.listdir(os.path.join(ARCHIVES_DIRECTORY, files)):
+            keyword_path = os.path.join(ARCHIVES_DIRECTORY, files, keyword)
+            folder = os.listdir(keyword_path)
+            print(keyword)
+    return
+
+logo()
