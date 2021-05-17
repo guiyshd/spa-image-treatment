@@ -68,7 +68,6 @@ def resize(img):
     images.append(img)
     img = create_thumb(img)
     images.append(img)
-    print(images)
 
     return images
 
@@ -86,8 +85,8 @@ def logo():
     for key in keywords:
         path = os.path.join(directory, key)
         img[0].save(os.path.join(path, key) + '.jpg', "JPEG")
-        img[1].save(os.path.join(thumbnail, key) + '.jpg', "JPEG")
         img[1].save(os.path.join(path, key) + '-thumb.jpg', "JPEG")
+        img[1].save(os.path.join(thumbnail, key) + '.jpg', "JPEG")
 
     return
 
