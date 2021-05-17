@@ -4,7 +4,8 @@ from PIL import Image
 import imghdr
 
 
-ARCHIVES_DIRECTORY = r'./archives/'
+directory = r'./archives/'
+thumbnail = r'./archives/thumbs'
 
 
 def create_thumb(img):
@@ -59,16 +60,34 @@ def national():
     return
 
 
+def resize(img):
+    images = []
+
+    img = create_photo(img)
+    images.append(img)
+    img = create_thumb(img)
+    images.append(img)
+    print(images)
+
+    return images
+
+
 def logo():
-    logo_path = r'./archives/favicon.png'
-    for files in os.listdir(ARCHIVES_DIRECTORY):
-        thumbnail_path = 'archives/thumbs'
-        if not os.path.exists(thumbnail_path):
-            os.mkdir(thumbnail_path)
-        for keyword in os.listdir(os.path.join(ARCHIVES_DIRECTORY, files)):
-            keyword_path = os.path.join(ARCHIVES_DIRECTORY, files, keyword)
-            folder = os.listdir(keyword_path)
-            print(keyword)
+    if not os.path.exists(thumbnail):
+        os.mkdir(thumbnail)
+
+    logo = Image.open(r'./archives/favicon.png')
+    img = resize(logo)
+
+    ignored = {"favicon.png"}
+    keywords = [keyword for keyword in os.listdir(directory) if keyword not in ignored]
+    
+    for key in keywords:
+        path = os.path.join(directory, key)
+        img[0].save(os.path.join(path, key) + '.jpg', "JPEG")
+        img[1].save(os.path.join(thumbnail, key) + '.jpg', "JPEG")
+        img[1].save(os.path.join(path, key) + '-thumb.jpg', "JPEG")
+
     return
 
 logo()
