@@ -3,7 +3,7 @@ from PIL import Image
 
 import imghdr
 
-
+ARCHIVES_DIRECTORY = r'./archives/'
 directory = r'./archives/'
 thumbnail = r'./archives/thumbs'
 
@@ -40,6 +40,7 @@ def national():
             os.mkdir(thumbnail_path)
         for keyword in os.listdir(os.path.join(ARCHIVES_DIRECTORY, files)):
             keyword_path = os.path.join(ARCHIVES_DIRECTORY, files, keyword)
+            print(keyword_path)
             folder = os.listdir(keyword_path)
             # print(keyword)
             for image in folder:
@@ -81,7 +82,7 @@ def logo():
 
     ignored = {"favicon.png"}
     keywords = [keyword for keyword in os.listdir(directory) if keyword not in ignored]
-    
+
     for key in keywords:
         path = os.path.join(directory, key)
         img[0].save(os.path.join(path, key) + '.jpg', "JPEG")
@@ -90,4 +91,5 @@ def logo():
 
     return
 
-logo()
+
+national()
