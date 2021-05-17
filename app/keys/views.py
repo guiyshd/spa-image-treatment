@@ -23,19 +23,13 @@ def ping_pong():
 
 
 def unzip_file(zip_src, dst_dir):
-    """
-    Unzip the zip file
-         :param zip_src: full path of zip file
-         :param dst_dir: the destination folder to extract to
-    :return:
-    """
     r = zipfile.is_zipfile(zip_src)
     if r:
         fz = zipfile.ZipFile(zip_src, "r")
         for file in fz.namelist():
             fz.extract(file, dst_dir)
     else:
-                 return "Please upload zip file"
+        return "Please upload zip file"
 
 
 @bp.route('/files', methods=['POST'])
