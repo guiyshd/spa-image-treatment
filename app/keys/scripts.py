@@ -47,7 +47,7 @@ def national():
                 if keyword != "thumbs":
                     image_path = os.path.join(keyword_path, image)
                     if not (any((keyword + ".jpg") in s for s in folder)):
-                        if image[-4:] == '.jpg' or image[-4:] == '.png' or image[-5:] == '.jpeg' or image[-4:] == '.JPG':
+                        if image[-4:] == '.jpg' or image[-4:] == '.png' or image[-5:] == '.jpeg' or image[-4:] == '.JPG' or image[-4:] == '.jfif':
                             image_path = os.path.join(keyword_path, image)
                             if os.path.isfile(image_path):
                                 print(keyword_path)
