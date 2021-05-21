@@ -1,10 +1,12 @@
 import os
 from PIL import Image
+from unidecode import unidecode
 
 import imghdr
 
-ARCHIVES_DIRECTORY = r'./archives/'
-directory = r'./archives/'
+
+ARCHIVES_DIRECTORY = r'./archives'
+directory = r'./archives'
 thumbnail = r'./archives/thumbs'
 
 
@@ -41,7 +43,7 @@ def national():
         for keyword in os.listdir(os.path.join(ARCHIVES_DIRECTORY, files)):
             keyword_path = os.path.join(ARCHIVES_DIRECTORY, files, keyword)
             folder = os.listdir(keyword_path)
-            # print(keyword)
+            print(keyword)
             for image in folder:
                 folder = os.listdir(keyword_path)
                 if keyword != "thumbs":
@@ -50,9 +52,9 @@ def national():
                         if image[-4:] == '.jpg' or image[-4:] == '.png' or image[-5:] == '.jpeg' or image[-4:] == '.JPG' or image[-4:] == '.jfif':
                             image_path = os.path.join(keyword_path, image)
                             if os.path.isfile(image_path):
-                                print(keyword_path)
                                 img = Image.open(image_path)
                                 photo = create_photo(img)
+                                unidecode(keyword)
                                 photo.save(os.path.join(keyword_path, keyword) + '.jpg', "JPEG")
                                 thumb = create_thumb(photo)
                                 thumb.save(os.path.join(keyword_path, keyword) + '-thumb.jpg', "JPEG")
@@ -70,7 +72,7 @@ def resize(img):
 
     return images
 
-
+0
 def logo():
     if not os.path.exists(thumbnail):
         os.mkdir(thumbnail)
