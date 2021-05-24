@@ -1,13 +1,28 @@
 import os
 from PIL import Image
-from unidecode import unidecode
 
 import imghdr
+import unidecode
+import unicodedata
 
 
 ARCHIVES_DIRECTORY = r'./archives'
 directory = r'./archives'
 thumbnail = r'./archives/thumbs'
+
+
+def strip_accents(text):
+
+    try:
+        text = unicode(text, 'utf-8')
+    except NameError: # unicode is a default on python 3 
+        pass
+
+    text = unicodedata.normalize('NFD', text)\
+           .encode('ascii', 'ignore')\
+           .decode("utf-8")
+
+    return str(text)
 
 
 def create_thumb(img):
@@ -35,7 +50,7 @@ def create_square(img, fill_color=(255, 255, 255, 0)):
     return new_im
 
 
-def national():
+def old_national():
     for files in os.listdir(ARCHIVES_DIRECTORY):
         thumbnail_path = 'archives/' + files + '/thumbs'
         if not os.path.exists(thumbnail_path):
@@ -54,11 +69,14 @@ def national():
                             if os.path.isfile(image_path):
                                 img = Image.open(image_path)
                                 photo = create_photo(img)
-                                unidecode(keyword)
-                                photo.save(os.path.join(keyword_path, keyword) + '.jpg', "JPEG")
+                                print(keyword)
+                                string_nova = ''.join(ch for ch in unicodedata.normalize('NFKD', keyword) 
+                                    if not unicodedata.combining(ch))
+                                print(string_nova)
+                                photo.save(os.path.join(keyword_path, string_nova) + '.jpg', "JPEG")
                                 thumb = create_thumb(photo)
-                                thumb.save(os.path.join(keyword_path, keyword) + '-thumb.jpg', "JPEG")
-                                thumb.save(os.path.join(thumbnail_path, keyword) + '.jpg', "JPEG")
+                                thumb.save(os.path.join(keyword_path, string_nova) + '-thumb.jpg', "JPEG")
+                                thumb.save(os.path.join(thumbnail_path, string_nova) + '.jpg', "JPEG")
     return
 
 
@@ -72,7 +90,29 @@ def resize(img):
 
     return images
 
-0
+
+def nacional():
+    if not os.path.exists(thumbnail):
+        os.mkdir(thumbnail)
+    for company in os.listdir(directory):
+        keywords = [keyword for keyword in os.listdir(os.path.join(directory, company))]
+        extensions = ['.jpg', '.png', '.JPG', '.jfif', '.jpeg']
+        for key in keywords:
+            path = os.path.join(directory, key)
+            if key != 'thumbs':
+                all_imgs = os.listdir(os.path.join(directory, company, key))
+                for img in all_imgs:
+                    img, extension = os.path.splitext(img)
+                    if any(x in extension for x in extensions):
+                        print(key, img)
+                        # open_img = Image.open(os.path.join(directory, key, img))
+                        # resized_img = resize(open_img)
+                        # resized_img[0].save(os.path.join(path, key) + '.jpg', 'JPEG')
+                        # resized_img[1].save(os.path.join(path, key) + '-thumb.jpg', 'JPEG')
+                        # resized_img[1].save(os.path.join(thumbnail, key) + '.jpg', 'JPEG')
+    return
+
+
 def logo():
     if not os.path.exists(thumbnail):
         os.mkdir(thumbnail)
@@ -92,4 +132,4 @@ def logo():
     return
 
 
-national()
+nacional()
