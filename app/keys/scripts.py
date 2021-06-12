@@ -7,7 +7,7 @@ import unicodedata
 
 
 ARCHIVES_DIRECTORY = r'./archives'
-directory = r'./archives'
+directory = r'./archives/'
 thumbnail = r'./archives/thumbs'
 
 
@@ -26,9 +26,9 @@ def strip_accents(text):
 
 
 def create_thumb(img):
-    wpercent = (350/float(img.size[0]))
+    wpercent = (200/float(img.size[0]))
     hsize = int((float(img.size[1])*float(wpercent)))
-    img = img.resize((350, hsize), Image.ANTIALIAS)
+    img = img.resize((200, hsize), Image.ANTIALIAS)
     img = create_square(img)
     return img
 
@@ -132,4 +132,12 @@ def logo():
     return
 
 
-old_national()
+def images():
+    keywords = os.listdir(directory)
+    for key in keywords:
+        img = Image.open(r'./archives/' + key)
+        img = resize(img)
+        img[1].save(os.path.join(directory, key), "WEBP")
+
+
+images()
