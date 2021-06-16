@@ -124,4 +124,4 @@ def images():
         img[1].save(os.path.join(directory, key), "WEBP")
 
 
-images()
+old_national()
