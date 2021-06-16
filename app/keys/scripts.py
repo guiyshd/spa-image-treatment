@@ -1,28 +1,12 @@
 import os
 from PIL import Image
 
-import imghdr
-import unidecode
 import unicodedata
 
 
 ARCHIVES_DIRECTORY = r'./archives'
 directory = r'./archives/'
 thumbnail = r'./archives/thumbs'
-
-
-def strip_accents(text):
-
-    try:
-        text = unicode(text, 'utf-8')
-    except NameError: # unicode is a default on python 3 
-        pass
-
-    text = unicodedata.normalize('NFD', text)\
-           .encode('ascii', 'ignore')\
-           .decode("utf-8")
-
-    return str(text)
 
 
 def create_thumb(img):
