@@ -57,10 +57,10 @@ def old_national():
                                 string_nova = ''.join(ch for ch in unicodedata.normalize('NFKD', keyword) 
                                     if not unicodedata.combining(ch))
                                 print(string_nova)
-                                photo.save(os.path.join(keyword_path, string_nova) + '.jpg', "JPEG")
+                                photo.save(os.path.join(keyword_path, string_nova) + '.png', "PNG")
                                 thumb = create_thumb(photo)
-                                thumb.save(os.path.join(keyword_path, string_nova) + '-thumb.jpg', "JPEG")
-                                thumb.save(os.path.join(thumbnail_path, string_nova) + '.jpg', "JPEG")
+                                thumb.save(os.path.join(keyword_path, string_nova) + '-thumb.png', "PNG")
+                                thumb.save(os.path.join(thumbnail_path, string_nova) + '.png', "PNG")
     return
 
 
