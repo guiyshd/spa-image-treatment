@@ -10,9 +10,9 @@ thumbnail = r'./archives/thumbs'
 
 
 def create_thumb(img):
-    wpercent = (200/float(img.size[0]))
+    wpercent = (350/float(img.size[0]))
     hsize = int((float(img.size[1])*float(wpercent)))
-    img = img.resize((200, hsize), Image.ANTIALIAS)
+    img = img.resize((350, hsize), Image.ANTIALIAS)
     img = create_square(img)
     return img
 
