@@ -58,15 +58,21 @@ def old_national():
                                 print(image, idx)
                                 if idx == 0:
                                     photo.save(os.path.join(keyword_path, keyword) + '.png', "PNG")
+                                    photo.save(os.path.join(keyword_path, keyword) + '.webp', "WEBP")
                                     thumb = create_thumb(photo)
                                     thumb.save(os.path.join(keyword_path, keyword) + '-thumb.png', "PNG")
+                                    thumb.save(os.path.join(keyword_path, keyword) + '-thumb.webp', "WEBP")
                                     thumb.save(os.path.join(thumbnail_path, keyword) + '.png', "PNG")
+                                    thumb.save(os.path.join(thumbnail_path, keyword) + '.webp', "WEBP")
                                     # os.remove(image_path)
                                 else:
                                     photo.save(os.path.join(keyword_path, keyword) + '-%d.png' % idx, "PNG")
+                                    photo.save(os.path.join(keyword_path, keyword) + '-%d.webp' % idx, "WEBP")
                                     thumb = create_thumb(photo)
                                     thumb.save(os.path.join(keyword_path, keyword) + '-thumb-%d.png' % idx, "PNG")
+                                    thumb.save(os.path.join(keyword_path, keyword) + '-thumb-%d.webp' % idx, "WEBP")
                                     thumb.save(os.path.join(thumbnail_path, keyword) + '-%d.png' % idx, "PNG")
+                                    thumb.save(os.path.join(thumbnail_path, keyword) + '-%d.webp' % idx, "WEBP")
                                     # os.remove(image_path)
     return
 
