@@ -43,24 +43,31 @@ def old_national():
             keyword_path = os.path.join(ARCHIVES_DIRECTORY, files, keyword)
             folder = os.listdir(keyword_path)
             print(keyword)
-            for image in folder:
+            for idx, image in enumerate(folder):
                 folder = os.listdir(keyword_path)
                 if keyword != "thumbs":
                     image_path = os.path.join(keyword_path, image)
+                    # print(image_path)
                     if not (any((keyword + ".jpg") in s for s in folder)):
                         if image[-4:] == '.jpg' or image[-4:] == '.png' or image[-5:] == '.jpeg' or image[-4:] == '.JPG' or image[-4:] == '.jfif':
                             image_path = os.path.join(keyword_path, image)
+                            print(image_path)
                             if os.path.isfile(image_path):
                                 img = Image.open(image_path)
                                 photo = create_photo(img)
-                                print(keyword)
-                                string_nova = ''.join(ch for ch in unicodedata.normalize('NFKD', keyword) 
-                                    if not unicodedata.combining(ch))
-                                print(string_nova)
-                                photo.save(os.path.join(keyword_path, string_nova) + '.png', "PNG")
-                                thumb = create_thumb(photo)
-                                thumb.save(os.path.join(keyword_path, string_nova) + '-thumb.png', "PNG")
-                                thumb.save(os.path.join(thumbnail_path, string_nova) + '.png', "PNG")
+                                print(image, idx)
+                                if idx == 0:
+                                    photo.save(os.path.join(keyword_path, keyword) + '.png', "PNG")
+                                    thumb = create_thumb(photo)
+                                    thumb.save(os.path.join(keyword_path, keyword) + '-thumb.png', "PNG")
+                                    thumb.save(os.path.join(thumbnail_path, keyword) + '.png', "PNG")
+                                    # os.remove(image_path)
+                                else:
+                                    photo.save(os.path.join(keyword_path, keyword) + '-%d.png' % idx, "PNG")
+                                    thumb = create_thumb(photo)
+                                    thumb.save(os.path.join(keyword_path, keyword) + '-thumb-%d.png' % idx, "PNG")
+                                    thumb.save(os.path.join(thumbnail_path, keyword) + '-%d.png' % idx, "PNG")
+                                    # os.remove(image_path)
     return
 
 
