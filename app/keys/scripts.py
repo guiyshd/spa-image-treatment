@@ -30,7 +30,7 @@ def create_square(img, fill_color=(255, 255, 255, 0)):
     size = max(x, x, y)
     new_im = Image.new('RGBA', (size, size), fill_color)
     new_im.paste(img, (int((size - x) / 2), int((size - y) / 2)))
-    new_im = new_im.convert("RGB")
+    new_im = new_im.convert("RGBA")
     return new_im
 
 
